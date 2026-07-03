@@ -1,0 +1,4 @@
+description: STMicroelectronics LSM6DSO32X platform-independent C driver (vendored)
+version: "2.3.0"
+url: https://github.com/STMicroelectronics/lsm6dso32x-pid
+license: BSD-3-Clause

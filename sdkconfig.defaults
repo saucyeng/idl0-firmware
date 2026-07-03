@@ -1,0 +1,78 @@
+# IDL0 firmware sdkconfig defaults.
+# Per-developer overrides go in sdkconfig (auto-generated, gitignored).
+
+CONFIG_IDF_TARGET="esp32c6"
+
+# FreeRTOS tick: 1 kHz. The IMU polling task runs faster than the FIFO
+# fills at 1666 Hz, so the scheduler needs millisecond resolution.
+CONFIG_FREERTOS_HZ=1000
+
+# Log level INFO globally; per-module debug enabled at runtime if needed.
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# Main task stack: 16 KB. app_main brings up several subsystems; the
+# prototype's 4 KB default ran tight.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=16384
+
+# Enable C++ exceptions for the ST driver wrapper (some ESPP-pattern code
+# we may pull in later expects this).
+CONFIG_COMPILER_CXX_EXCEPTIONS=y
+
+# Bluetooth — BLE only (ESP32-C6 has no Classic BT). NimBLE host stack.
+# Required for the §7 control-plane GATT service.
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# Dual-role NimBLE: peripheral (GATT server for the phone) + central
+# (GATT client for the BLE Heart Rate Monitor — §7.5). Two simultaneous
+# connections: phone + HRM strap. See §10.4 for coexistence.
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=y
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=2
+
+# Preferred ATT MTU 256 so the multi-line status string (§7.3) fits in a
+# single notification once the app negotiates MTU up from the 23-byte default.
+CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=256
+
+# NimBLE host task stack: 8 KB (default 4 KB).
+# BLE control-write callbacks run inline in the NimBLE host task; on
+# CMD_START_LOGGING the chain is:
+#   on_ble_command -> idl0_session_on_ble_command -> idl0_session_start
+#     -> idl0_sd_open_session -> esp_vfs_open -> FAT driver (LFN buffer on stack)
+# The 4 KB default stack overflowed mid-vfs_open after Track B's HRM
+# additions compiled into the same task — caught by the stack canary.
+# 8 KB leaves a comfortable margin for the SD open path + any HRM
+# central-role callbacks that pile on top.
+CONFIG_BT_NIMBLE_TASK_STACK_SIZE=8192
+
+# FATFS long filenames — session files (YYYY-MM-DD_HH-MM-SS.idl0) exceed
+# the FAT 8.3 limit. LFN buffers on the stack.
+CONFIG_FATFS_LFN_STACK=y
+CONFIG_FATFS_MAX_LFN=255
+
+# WiFi AP file transfer throughput — defaults leave the link idle
+# waiting for ACKs. Each TCP buffer costs ~16 KB SRAM (budgeted against
+# C6's 512 KB). Brings /download from ~150 KB/s into the 500 KB/s+ band.
+CONFIG_LWIP_TCP_SND_BUF_DEFAULT=16384
+CONFIG_LWIP_TCP_WND_DEFAULT=16384
+
+# More WiFi RX buffers for bursty inbound packets during a large GET.
+CONFIG_ESP_WIFI_STATIC_RX_BUFFER_NUM=16
+CONFIG_ESP_WIFI_DYNAMIC_TX_BUFFER_NUM=32
+
+# Use the custom dual-OTA partition table (firmware/partitions.csv).
+# The IDF default single-app table has a 1 MB factory partition; with
+# WiFi + NimBLE (peripheral + central for HRM) + cJSON + fatfs + our
+# code the binary is ~1.5 MB, so we move to the §4.6 layout (two
+# 1600 KB OTA slots) and unblock P9 OTA at the same time. 1600 KB is
+# 64 KB-aligned; bumped from 1500 KB after CONFIG_BT_NIMBLE_ROLE_CENTRAL
+# pushed the binary past 1500 KB.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# XIAO ESP32-C6 has 4 MB flash. The IDF default is 2 MB, which doesn't
+# fit our dual-OTA layout (~3.1 MB). Set both the esptool flash size
+# (used at build/flash time) and the chip-side flash size (used by
+# esp_partition / spi_flash) to 4 MB.
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_ESPTOOLPY_FLASHSIZE="4MB"
+CONFIG_ESPTOOLPY_FLASHSIZE_DETECT=y

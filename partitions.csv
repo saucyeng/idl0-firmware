@@ -1,0 +1,7 @@
+# ESP-IDF Partition Table — IDL0 v2 (OTA enabled)
+# Name,   Type, SubType,  Offset,   Size,  Flags
+nvs,      data, nvs,      0x9000,   24K,
+phy_init, data, phy,      0xF000,   4K,
+otadata,  data, ota,      0x10000,  8K,
+ota_0,    app,  ota_0,    0x20000,  1600K,
+ota_1,    app,  ota_1,    ,         1600K,

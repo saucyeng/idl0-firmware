@@ -1,0 +1,54 @@
+name: firmware-release
+
+# Builds the ESP-IDF firmware and publishes it to a GitHub Release on a version
+# tag. Version of record = the tag (leading `v` stripped) -> version.txt ->
+# esp_app_desc_t.version, which the app reads over /ping and the §7.3 status line
+# to offer OTA updates.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Derive version from tag
+        id: ver
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "$VERSION" > version.txt
+
+      - name: Build firmware (ESP-IDF)
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: v6.0.1
+          target: esp32c6
+          path: '.'
+
+      - name: Compute SHA-256 of the app image
+        id: hash
+        run: |
+          APP_BIN="$(find build -maxdepth 1 -name '*.bin' | head -1)"
+          echo "Found app image: $APP_BIN"
+          sha256sum "$APP_BIN" | awk '{print $1}' > build/firmware.bin.sha256
+          echo "bin=$APP_BIN" >> "$GITHUB_OUTPUT"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Firmware ${{ steps.ver.outputs.version }}
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
+          files: |
+            ${{ steps.hash.outputs.bin }}
+            build/firmware.bin.sha256

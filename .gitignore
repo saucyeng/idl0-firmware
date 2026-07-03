@@ -1,0 +1,13 @@
+# ESP-IDF build artefacts
+build/
+sdkconfig
+sdkconfig.old
+dependencies.lock
+
+# IDE
+.vscode/
+.idea/
+
+# Hardware export (binary; keep out of git)
+hardware/*.net
+hardware/*.kicad_pcb-bak

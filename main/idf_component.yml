@@ -1,0 +1,10 @@
+# IDL0 main component dependencies.
+# Add ESP-IDF managed components here as they are needed.
+# Vendored components (e.g. lsm6dso32x_STdC) live under
+# ../components/ and are picked up by the build system automatically.
+dependencies:
+  idf:
+    version: ">=5.5"
+  # cJSON moved out of esp-idf core in v6.0 — pull from the registry.
+  # Used by idl0_config.c to parse /sdcard/idl0_config.json.
+  espressif/cjson: "^1.7.19"
