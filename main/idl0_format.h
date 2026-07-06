@@ -3,7 +3,7 @@
  * Pure byte-builders for the on-disk format. No I/O — the caller
  * (sd_logger / session) decides where bytes go.
  *
- * See docs/IDL0_SPEC.md §5 for the byte-level contract.
+ * See IDL0_SPEC.md §5 for the byte-level contract (spec location: docs/README.md).
  */
 
 #pragma once

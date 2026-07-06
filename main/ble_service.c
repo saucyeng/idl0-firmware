@@ -1,7 +1,8 @@
 /* IDL0 BLE control plane — NimBLE peripheral.
  *
- * Implements ble_service.h. See §7 of docs/IDL0_SPEC.md for the GATT
- * contract. Task 3 scope: host init + advertising. The GATT service
+ * Implements ble_service.h. See §7 of IDL0_SPEC.md for the GATT
+ * contract (spec location: docs/README.md). Task 3 scope: host init +
+ * advertising. The GATT service
  * itself is added in Task 4.
  */
 

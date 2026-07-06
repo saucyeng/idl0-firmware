@@ -7,7 +7,7 @@
  * decoded into channel 22 (HR_BPM) and channel 23 (HR_RR) CHANNEL_SAMPLE
  * records via the standard writer pipeline.
  *
- * See docs/IDL0_SPEC.md §5.2, §7.5, §10.4.
+ * See IDL0_SPEC.md §5.2, §7.5, §10.4 (spec location: docs/README.md).
  */
 
 #pragma once

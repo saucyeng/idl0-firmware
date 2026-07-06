@@ -1,7 +1,7 @@
 /* idl0_config.json loader. Reads the JSON from the SD card root,
  * derives the §5.4 IMU channel mask, and computes the §5.1 config CRC32.
  * On any failure, out_config is filled with safe defaults so a session
- * can still start. See docs/IDL0_SPEC.md §8.
+ * can still start. See IDL0_SPEC.md §8 (spec location: docs/README.md).
  */
 
 #include "idl0_config.h"

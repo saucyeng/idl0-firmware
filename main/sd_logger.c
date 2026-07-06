@@ -4,7 +4,7 @@
  * file writer (idl0_sd_open_session / _append / _rename / _close) is
  * added in Milestone 4.
  *
- * See docs/IDL0_SPEC.md §10.2 for the SD layout contract.
+ * See IDL0_SPEC.md §10.2 for the SD layout contract (spec location: docs/README.md).
  */
 
 #include "sd_logger.h"

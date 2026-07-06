@@ -1,7 +1,7 @@
 /* NimBLE GATT service for the IDL0 device control plane.
  *
  * Service FF, FF03 (write+rsp, control), FF04 (notify, status).
- * See §7 of docs/IDL0_SPEC.md for the wire contract.
+ * See §7 of IDL0_SPEC.md for the wire contract (spec location: docs/README.md).
  */
 
 #pragma once

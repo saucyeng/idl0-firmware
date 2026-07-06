@@ -4,7 +4,7 @@
  * bytes out explicitly, which is correct on any host — asserted by the
  * host test.
  *
- * See docs/IDL0_SPEC.md §5 for the byte-level contract.
+ * See IDL0_SPEC.md §5 for the byte-level contract (spec location: docs/README.md).
  */
 
 #include "idl0_format.h"
