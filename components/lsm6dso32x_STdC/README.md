@@ -10,6 +10,4 @@ function pointers required by `stmdev_ctx_t`) lives in `../../main/imu_driver.c`
 — not here — so this folder stays a pristine copy of upstream and
 can be re-synced cleanly.
 
-When updating: re-run the `curl` commands in
-`docs/superpowers/plans/2026-05-13-firmware-bringup-p1-p2.md` Task 16
-Step 2 and check the diff before committing.
+When updating: re-run the `curl` commands used to vendor this driver and check the diff before committing.

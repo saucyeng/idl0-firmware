@@ -36,7 +36,6 @@ typedef enum {
  *   0x80 — IDL0_ACK_BUSY (reserved)
  *   0x81 — IDL0_ACK_PRECONDITION (reserved)
  *   0x82 — IDL0_ACK_NOT_IMPLEMENTED (reserved)
- * See docs/superpowers/specs/2026-05-26-wifi-logging-mutex-design.md §3.3.
  */
 typedef uint8_t (*idl0_ble_command_cb)(idl0_ble_command_t cmd);
 

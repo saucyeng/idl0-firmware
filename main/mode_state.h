@@ -1,8 +1,8 @@
 /* Single source of truth for "what mode is the firmware in".
  * Producers: wifi_server.c (WIFI_UP bit), session.c (LOGGING_ACTIVE bit).
  * Subscribers wait on bit changes via xEventGroupWaitBits / xEventGroupGetBits;
- * no per-subsystem callbacks. See
- * docs/superpowers/specs/2026-05-26-wifi-logging-mutex-design.md §3.4. */
+ * no per-subsystem callbacks.
+ */
 #pragma once
 
 #include "freertos/FreeRTOS.h"

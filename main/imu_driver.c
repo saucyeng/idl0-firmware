@@ -49,8 +49,8 @@ static const char *TAG = "imu";
  * the full LSM6DSO32X FIFO (3 KB, 7-byte words). 1 + 512*7 = 3585 bytes fits
  * under the bus's 4096-byte max_transfer_sz (set in sd_logger spi_bus_config).
  * The burst replaces the old words*2 per-word transactions — the per-word path
- * spent ~⅔ of every poll cycle in spi_device_transmit overhead (see
- * docs/superpowers/specs/2026-06-16-imu-drop-firmware-rootcause.md). */
+ * spent ~⅔ of every poll cycle in spi_device_transmit overhead.
+ */
 #define IMU_SPI_BURST_MAX_WORDS 512
 
 /* CS pin per IMU index. Order matches pins.h §3 (IMU0 onboard sprung

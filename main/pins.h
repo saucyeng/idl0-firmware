@@ -3,7 +3,7 @@
  * Single source of truth for every GPIO. Values are derived from the
  * KiCad netlist export at firmware/hardware/netlist.net. To regenerate
  * after a schematic change, re-run P3 Task 1 of the firmware bring-up
- * plan (docs/superpowers/plans/2026-05-13-firmware-bringup-p3-pins-led.md).
+ * plan.
  *
  * Hardware notes:
  *   - Status LED uses the XIAO ESP32-C6 **onboard** user LED on GPIO15
