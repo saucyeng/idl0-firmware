@@ -76,3 +76,12 @@ CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
 CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
 CONFIG_ESPTOOLPY_FLASHSIZE="4MB"
 CONFIG_ESPTOOLPY_FLASHSIZE_DETECT=y
+
+# §4.6 OTA rollback: a freshly OTA'd image boots ESP_OTA_IMG_PENDING_VERIFY
+# and the bootloader rolls back to the previous slot on reboot unless the
+# app commits it via CMD_OTA_CONFIRM (§7.2). Without this flag the state
+# machine is compiled out: images boot straight to VALID and
+# esp_ota_mark_app_valid_cancel_rollback() no-ops.
+# NOTE: bootloader option — devices flashed before this change need one
+# USB flash (the bootloader is never OTA-updated).
+CONFIG_BOOTLOADER_APP_ROLLBACK_ENABLE=y
