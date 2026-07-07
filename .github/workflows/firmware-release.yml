@@ -53,13 +53,18 @@ jobs:
         env:
           VERSION: ${{ steps.ver.outputs.version }}
         run: |
+          # esp-idf-ci-action builds in Docker as root, so build/ is
+          # root-owned and this (runner-user) step cannot write into it —
+          # stage into a fresh runner-owned dist/ instead (v0.1.0 first-run
+          # lesson). Reading root-owned build output is fine.
           APP_BIN=build/idl0_firmware.bin   # fixed by project(idl0_firmware) in CMakeLists.txt
           test -f "$APP_BIN" || { echo "::error::app image not found at $APP_BIN"; exit 1; }
           V="${VERSION}"
-          cp "$APP_BIN" "build/idl0-firmware-v${V}.bin"
-          (cd build && sha256sum "idl0-firmware-v${V}.bin" > "idl0-firmware-v${V}.bin.sha256")
-          echo "bin=build/idl0-firmware-v${V}.bin" >> "$GITHUB_OUTPUT"
-          echo "sha=build/idl0-firmware-v${V}.bin.sha256" >> "$GITHUB_OUTPUT"
+          mkdir -p dist
+          cp "$APP_BIN" "dist/idl0-firmware-v${V}.bin"
+          (cd dist && sha256sum "idl0-firmware-v${V}.bin" > "idl0-firmware-v${V}.bin.sha256")
+          echo "bin=dist/idl0-firmware-v${V}.bin" >> "$GITHUB_OUTPUT"
+          echo "sha=dist/idl0-firmware-v${V}.bin.sha256" >> "$GITHUB_OUTPUT"
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
